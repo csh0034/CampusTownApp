@@ -9,11 +9,13 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class MainActivity extends AppCompatActivity {
 
     WebView webView;
     WebSettings webSettings;
+    SwipeRefreshLayout refreshLayout;
 
     private final long FINISH_INTERVAL_TIME = 2000;
     private long backPressedTime = 0;
@@ -24,13 +26,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         webView = findViewById(R.id.webView);
+        refreshLayout = findViewById(R.id.swipe);
 
         webView.setWebChromeClient(new WebChromeClient());
         webView.setWebViewClient(new WebViewClient() {
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                refreshLayout.setRefreshing(false);
             }
         });
 
@@ -45,6 +55,13 @@ public class MainActivity extends AppCompatActivity {
         webSettings.setBuiltInZoomControls(false); // 화면 확대 축소 허용 여부
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE); // 브라우저 캐시 허용 여부
         webSettings.setDomStorageEnabled(true); // 로컬저장소 허용 여부
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                webView.reload();
+            }
+        });
 
         webView.loadUrl("http://seoilcampustown.kr");
 

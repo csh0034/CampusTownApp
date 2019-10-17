@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+
+    <item android:drawable="@color/ic_launcher_seoil_background"/>
+
+    <item
+        android:drawable="@drawable/splash_img"
+        android:gravity="center" />
+
+</layer-list>
